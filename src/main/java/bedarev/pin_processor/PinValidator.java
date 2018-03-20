@@ -9,8 +9,6 @@ public class PinValidator {
     private Menu menu = new Menu();
     private final static Integer MAX_CNT_INCORRECT_PIN_INPUT = 3;
 
-
-
     public boolean validatePin(String userPinCode) {
         try {
             if (accountIsLocked && countInputPin == MAX_CNT_INCORRECT_PIN_INPUT) {
@@ -33,6 +31,10 @@ public class PinValidator {
         return false;
     }
 
+    public boolean isAccountIsLocked() {
+        return accountIsLocked;
+    }
+
     private int getCountInputPin() {
         return countInputPin;
     }
@@ -44,7 +46,6 @@ public class PinValidator {
     private int getTimer() {
         return timer;
     }
-
 
     private void setAccountIsLocked() {
         accountIsLocked = true;
@@ -61,7 +62,6 @@ public class PinValidator {
         }).start();
     }
 
-
     private void failedAttemptsCounter() {
 
         if (getCountInputPin() >= MAX_CNT_INCORRECT_PIN_INPUT) {
@@ -74,7 +74,6 @@ public class PinValidator {
             menu.print("Pin is not valid, please try more...");
         }
     }
-
 }
 
 class AccountIsLockedException extends Error {

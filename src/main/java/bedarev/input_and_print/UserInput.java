@@ -13,12 +13,4 @@ public class UserInput implements InputInterface {
         return scanner.nextLine();
     }
 
-    public final void closeConnection() {
-        try {
-            scanner.close();
-        } catch (Exception exception) {
-            exception.printStackTrace();
-        }
-
-    }
 }

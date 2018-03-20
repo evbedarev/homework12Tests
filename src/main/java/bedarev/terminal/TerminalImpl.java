@@ -5,45 +5,45 @@ import bedarev.input_and_print.Menu;
 import bedarev.input_and_print.UserInput;
 import bedarev.pin_processor.PinValidator;
 
+import java.util.Scanner;
+
 public class TerminalImpl {
     private final TerminalServer server;
     private final PinValidator pinValidator;
     private Menu menu = new Menu();
-    private InputInterface userInput = new UserInput();
 
-
-    private TerminalImpl(TerminalServer server, PinValidator pinValidator) {
+    public TerminalImpl(TerminalServer server, PinValidator pinValidator) {
         this.server = server;
         this.pinValidator = pinValidator;
     }
 
-
-    private void run() throws InterruptedException {
-        while (true) {
-            menu.print("Please enter pin code. For quit press 'q': ");
-            try {
-                String input = userInput.getInput();
-                if (input.equals("q")) {
-                    break;
-                }
-                if (pinValidator.validatePin(input)) {
-                    server.runTerminal();
-                }
-            } catch (NetworkProblemException | HardwareProblemException exception) {
-                menu.print(exception.getMessage());
-                Thread.sleep(3000);
-            } catch (Exception exception) {
-                exception.printStackTrace();
+    public boolean run(String input) throws InterruptedException {
+        try {
+            if (input.equals("q")) {
+                return true;
             }
+            if (pinValidator.validatePin(input)) {
+                server.runTerminal();
+            }
+        } catch (NetworkProblemException | HardwareProblemException exception) {
+            menu.print(exception.getMessage());
+            Thread.sleep(3000);
+        } catch (Exception exception) {
+            exception.printStackTrace();
         }
-        userInput.closeConnection();
+        return false;
     }
 
-
-
     public static void main(String[] args) throws InterruptedException {
+        Menu menu = new Menu();
         TerminalImpl terminal = new TerminalImpl(new TerminalServer(), new PinValidator());
-        terminal.run();
+        boolean exit = false;
+
+        while (!exit) {
+            menu.print("Please enter pin code. For quit press 'q': ");
+            exit = terminal.run(new Scanner(System.in).nextLine());
+        }
+
 
     }
 }

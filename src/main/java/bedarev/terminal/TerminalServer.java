@@ -6,6 +6,7 @@ import bedarev.input_and_print.UserInput;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.function.BiFunction;
 
 
@@ -16,7 +17,7 @@ public class TerminalServer {
     private RandomException randomException = new RandomException();
 
 
-    private int getAccount() {
+    public int getAccount() {
         return account;
     }
 
@@ -25,9 +26,7 @@ public class TerminalServer {
     }
 
 
-    private void calcValue(String message, BiFunction<Integer, Integer, Integer> biFunction) {
-        menu.print("Please enter value: ");
-        String input = userInput.getInput();  //Ввод суммы которую хотим внести или снять
+    public void calcValue(String message, BiFunction<Integer, Integer, Integer> biFunction, String input) {
 
         //Проверка на кратность ста и на положительный результат лябмды
         if ((Integer.valueOf(input) % 100 == 0) && ((biFunction.apply(account, Integer.valueOf(input))) > 0)) {
@@ -42,7 +41,6 @@ public class TerminalServer {
         if (Integer.valueOf(input) % 100 != 0) {
             menu.print("Enter number multiple one hundred");
         }
-        menu.printPressEnter();
     }
 
 
@@ -51,11 +49,13 @@ public class TerminalServer {
             menu.showMenu();
             try {
                 randomException.random();
-                String input = userInput.getInput();
+                String input = new Scanner(System.in).nextLine();
                 if (input.equals("4")) {
                     break;
                 }
-                logicMenu(input);
+                logicMenu(input,new Scanner(System.in).nextLine());
+                menu.print("Please enter value: ");
+
             } catch (NumberFormatException e) {
                 menu.print("Error. Please enter nubmer");
                 menu.printPressEnter();
@@ -67,26 +67,24 @@ public class TerminalServer {
 
 
 
-    private void logicMenu(String input) {
+    public void logicMenu(String menuInput, String valueToCalc) {
         Map<String,Runnable> menuValueMap = new HashMap<>();
         menuValueMap.put("1",() -> {
             menu.print("On your account: " + getAccount());
             menu.printPressEnter();
         });
+
         menuValueMap.put("2", () ->
-                calcValue("Add to your account: ", (x, y) -> x + y));
+                calcValue("Add to your account: ", (x, y) -> x + y, valueToCalc));
+
         menuValueMap.put("3", () ->
-                calcValue("Withdraw from your account: ", (x, y) -> x - y));
-        if(menuValueMap.containsKey(input)) {
-            menuValueMap.get(input).run();
+                calcValue("Withdraw from your account: ", (x, y) -> x - y, valueToCalc));
+
+        if(menuValueMap.containsKey(menuInput)) {
+            menuValueMap.get(menuInput).run();
         }
     }
 
 }
 
 
-class NotEnoughMoneyException extends Error {
-    NotEnoughMoneyException() {
-        super("Not enough money. ");
-    }
-}
