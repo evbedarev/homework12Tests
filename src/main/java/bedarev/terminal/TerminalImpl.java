@@ -5,8 +5,6 @@ import bedarev.input_and_print.Menu;
 import bedarev.input_and_print.UserInput;
 import bedarev.pin_processor.PinValidator;
 
-import java.util.Scanner;
-
 public class TerminalImpl {
     private final TerminalServer server;
     private final PinValidator pinValidator;
@@ -36,14 +34,13 @@ public class TerminalImpl {
 
     public static void main(String[] args) throws InterruptedException {
         Menu menu = new Menu();
-        TerminalImpl terminal = new TerminalImpl(new TerminalServer(), new PinValidator());
+        InputInterface userInput = new UserInput();
+        TerminalImpl terminal = new TerminalImpl(new TerminalServer(menu), new PinValidator(menu));
         boolean exit = false;
 
         while (!exit) {
             menu.print("Please enter pin code. For quit press 'q': ");
-            exit = terminal.run(new Scanner(System.in).nextLine());
+            exit = terminal.run(userInput.getInput());
         }
-
-
     }
 }

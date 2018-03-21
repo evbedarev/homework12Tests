@@ -6,11 +6,10 @@ public class UserInput implements InputInterface {
     private Scanner scanner;
 
     public UserInput() {
-        scanner = new Scanner(System.in);
+       scanner = new Scanner(System.in);
     }
 
     public String getInput() {
         return scanner.nextLine();
     }
-
 }

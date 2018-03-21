@@ -6,8 +6,12 @@ public class PinValidator {
     private int countInputPin = 1;
     private boolean accountIsLocked = false;
     private int timer;
-    private Menu menu = new Menu();
-    private final static Integer MAX_CNT_INCORRECT_PIN_INPUT = 3;
+    private Menu menu;
+    private static final Integer MAX_CNT_INCORRECT_PIN_INPUT = 3;
+
+    public PinValidator(Menu menu) {
+        this.menu = menu;
+    }
 
     public boolean validatePin(String userPinCode) {
         try {
@@ -16,6 +20,7 @@ public class PinValidator {
             }
 
             if (userPinCode.equals(pinCode)) {
+                countInputPin = 1;
                 menu.print("Pin is valid");
             }
 

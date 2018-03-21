@@ -5,8 +5,8 @@ bedarev/terminal/HardwareProblemException.class
 bedarev/input_and_print/InputInterface.class
 bedarev/terminal/TerminalImpl.class
 bedarev/input_and_print/UserInput.class
-bedarev/terminal/RandomException.class
 bedarev/pin_processor/PinValidator.class
+bedarev/terminal/RandomException.class
 bedarev/Example.class
 bedarev/terminal/TerminalServer.class
 bedarev/input_and_print/Menu.class

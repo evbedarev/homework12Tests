@@ -6,16 +6,17 @@ import bedarev.input_and_print.UserInput;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.function.BiFunction;
-
 
 public class TerminalServer {
     private int account = 0;
-    private Menu menu = new Menu();
+    private Menu menu;
     private InputInterface userInput = new UserInput();
     private RandomException randomException = new RandomException();
 
+    public TerminalServer(Menu menu) {
+        this.menu = menu;
+    }
 
     public int getAccount() {
         return account;
@@ -25,9 +26,7 @@ public class TerminalServer {
         this.account = account;
     }
 
-
     public void calcValue(String message, BiFunction<Integer, Integer, Integer> biFunction, String input) {
-
         //Проверка на кратность ста и на положительный результат лябмды
         if ((Integer.valueOf(input) % 100 == 0) && ((biFunction.apply(account, Integer.valueOf(input))) > 0)) {
             setAccount(biFunction.apply(account, Integer.valueOf(input)));
@@ -43,18 +42,17 @@ public class TerminalServer {
         }
     }
 
-
     public void runTerminal () throws Exception {
         while (true) {
             menu.showMenu();
             try {
                 randomException.random();
-                String input = new Scanner(System.in).nextLine();
+                String input = userInput.getInput();
                 if (input.equals("4")) {
                     break;
                 }
-                logicMenu(input,new Scanner(System.in).nextLine());
-                menu.print("Please enter value: ");
+                logicMenu(input);
+                menu.printPressEnter();
 
             } catch (NumberFormatException e) {
                 menu.print("Error. Please enter nubmer");
@@ -65,20 +63,20 @@ public class TerminalServer {
         }
     }
 
-
-
-    public void logicMenu(String menuInput, String valueToCalc) {
+    public void logicMenu(String menuInput) {
+        InputInterface userInput = new UserInput();
         Map<String,Runnable> menuValueMap = new HashMap<>();
-        menuValueMap.put("1",() -> {
-            menu.print("On your account: " + getAccount());
-            menu.printPressEnter();
-        });
+        menu.print("Please enter value: ");
+
+        menuValueMap.put("1",() ->
+            menu.print("On your account: " + getAccount())
+        );
 
         menuValueMap.put("2", () ->
-                calcValue("Add to your account: ", (x, y) -> x + y, valueToCalc));
+                calcValue("Add to your account: ", (x, y) -> x + y, userInput.getInput()));
 
         menuValueMap.put("3", () ->
-                calcValue("Withdraw from your account: ", (x, y) -> x - y, valueToCalc));
+                calcValue("Withdraw from your account: ", (x, y) -> x - y, userInput.getInput()));
 
         if(menuValueMap.containsKey(menuInput)) {
             menuValueMap.get(menuInput).run();

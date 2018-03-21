@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Menu {
 
-    public final void showMenu() {
+    public void showMenu() {
         System.out.println("=====================");
         System.out.println("Please enter command:");
         System.out.println("1 - check account");
@@ -14,18 +14,17 @@ public class Menu {
         System.out.println("=====================");
     }
 
-    public final void print(String message) {
+    public void print(String message) {
         System.out.println(message);
     }
 
-    public final void printPressEnter() {
+    public void printPressEnter() {
         try {
             System.out.println("Press enter to continue ...");
             System.in.read();
         } catch (IOException exception) {
             exception.printStackTrace();
         }
-
     }
 
 }
