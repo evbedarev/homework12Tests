@@ -2,7 +2,7 @@ package bedarev.pin_processor;
 import bedarev.input_and_print.Menu;
 
 public class PinValidator {
-    private final static String pinCode = "1234";
+    private static final String PIN_CODE = "1234";
     private int countInputPin = 1;
     private boolean accountIsLocked = false;
     private int timer;
@@ -19,16 +19,16 @@ public class PinValidator {
                 throw new AccountIsLockedException("Account is locked. Time left: " + getTimer() + " seconds");
             }
 
-            if (userPinCode.equals(pinCode)) {
+            if (userPinCode.equals(PIN_CODE)) {
                 countInputPin = 1;
                 menu.print("Pin is valid");
             }
 
-            if (!userPinCode.equals(pinCode)) {
+            if (!userPinCode.equals(PIN_CODE)) {
                 failedAttemptsCounter();
             }
 
-            return userPinCode.equals(pinCode);
+            return userPinCode.equals(PIN_CODE);
 
         } catch (AccountIsLockedException exception) {
             menu.print(exception.getMessage());

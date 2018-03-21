@@ -11,8 +11,8 @@ import static org.mockito.Mockito.*;
 
 
 public class Tests {
-    private final static String WRONG_PIN_CODE = "12345";
-    private final static String VALID_PIN_CODE = "1234";
+    private static final String WRONG_PIN_CODE = "12345";
+    private static final String VALID_PIN_CODE = "1234";
     private PinValidator pinValid;
     private TerminalServer termServ;
 
@@ -95,7 +95,6 @@ public class Tests {
             } catch (HardwareProblemException exception) {
                 exception.getMessage();
             }
-
         }
     }
 
@@ -109,7 +108,6 @@ public class Tests {
             } catch (NetworkProblemException exception) {
                 exception.getMessage();
             }
-
         }
     }
 }
